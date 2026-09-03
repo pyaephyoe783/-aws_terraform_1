@@ -57,3 +57,15 @@ variable "asg_desired_capacity" {
   type        = number
   default     = 2
 }
+
+variable "db_username" {
+  description = "The username for the RDS database"
+  type        = string
+  default     = "admin"
+}
+
+variable "db_password" {
+  description = "The password for the RDS database"
+  type        = string
+  sensitive   = true
+}
