@@ -13,3 +13,21 @@
 # Crash log files
 crash.log
 crash.*.log
+
+# Terraform Local Cache & State Files
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+
+# Sensitive variable files (Password / Access Keys ပါတတ်သော file များ)
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# IDE / Editor Files
+.vscode/
+.idea/

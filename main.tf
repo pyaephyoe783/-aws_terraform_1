@@ -5,6 +5,14 @@ terraform {
       version = "~> 5.0"
     }
   }
+
+  # backend "s3" {
+  #   bucket       = "my-tf-state-bucket-ye-yint-2026"
+  #   key          = "global/s3/terraform.tfstate"
+  #   region       = "us-east-1"
+  #   encrypt      = true
+  #   use_lockfile = true
+  # }
 }
 
 provider "aws" {
@@ -214,6 +222,7 @@ resource "aws_instance" "web_sever_1" {
   subnet_id              = aws_subnet.private_subnet_1.id
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
   depends_on             = [aws_nat_gateway.nat_gw]
+  iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
 
   user_data = <<-EOF
               #!/bin/bash
@@ -235,6 +244,7 @@ resource "aws_instance" "web_sever_2" {
   subnet_id              = aws_subnet.private_subnet_2.id
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
   depends_on             = [aws_nat_gateway.nat_gw]
+  iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
 
   user_data = <<-EOF
               #!/bin/bash
