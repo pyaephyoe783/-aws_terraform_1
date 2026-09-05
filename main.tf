@@ -19,7 +19,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-# --- VPC & Networking ---
+
 
 resource "aws_vpc" "main_vpc" {
   cidr_block           = var.vpc_cidr
@@ -56,7 +56,7 @@ resource "aws_nat_gateway" "nat_gw" {
   }
 }
 
-# --- Subnets ---
+
 
 resource "aws_subnet" "public_subnet_1" {
   vpc_id                  = aws_vpc.main_vpc.id
@@ -100,7 +100,7 @@ resource "aws_subnet" "private_subnet_2" {
   }
 }
 
-# --- Route Tables & Associations ---
+
 
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.main_vpc.id
@@ -148,7 +148,7 @@ resource "aws_route_table_association" "private_assoc_2" {
   route_table_id = aws_route_table.private_rt.id
 }
 
-# --- Security Groups ---
+
 
 resource "aws_security_group" "alb_sg" {
   name        = "alb-security-group"
@@ -197,7 +197,7 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-# --- AMI Data Source ---
+
 
 data "aws_ami" "ubuntu_golden" {
   most_recent = true
@@ -214,7 +214,7 @@ data "aws_ami" "ubuntu_golden" {
   }
 }
 
-# --- Compute (EC2 Instances) ---
+
 
 resource "aws_instance" "web_sever_1" {
   ami                    = data.aws_ami.ubuntu_golden.id
@@ -260,7 +260,7 @@ resource "aws_instance" "web_sever_2" {
   }
 }
 
-# --- Load Balancer & Target Group ---
+
 
 resource "aws_lb_target_group" "web_tg" {
   name     = "web-sever-tg"

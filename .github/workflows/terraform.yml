@@ -1,0 +1,48 @@
+name: "Terraform Production Deployment"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  id-token: write   # OIDC Authentication အတွက် မဖြစ်မနေ လိုအပ်ပါသည်
+  contents: read    # Repository Code များကို ဖတ်ရန်
+
+jobs:
+  terraform:
+    name: "Terraform CI/CD"
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. GitHub Repository မှ Code များကို Checkout လုပ်ခြင်း
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. Terraform CLI ကို Runner ပေါ်တွင် Install လုပ်ခြင်း
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.0"
+
+      # 3. AWS OIDC ဖြင့် Keyless Authentication ပြုလုပ်ခြင်း
+      # (မှတ်ချက် - ARN နေရာတွင် OIDC Role ဆောက်ပြီးမှ ရလာမည့် ARN ကို ထည့်ရမည်ဖြစ်၍ ခေတ္တ အောက်ပါအတိုင်း ထားရှိပေးပါ)
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::227220817151/github-actions-terraform-role
+          aws-region: us-east-1
+
+      # 4. Terraform Init ခေါ်ယူခြင်း
+      - name: Terraform Init
+        run: terraform init
+
+      # 5. Terraform Plan စစ်ဆေးခြင်း
+      - name: Terraform Plan
+        run: terraform plan
+
+      # 6. Main Branch သို့ Push လုပ်ပါက Auto Apply လုပ်ဆောင်ခြင်း
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve
