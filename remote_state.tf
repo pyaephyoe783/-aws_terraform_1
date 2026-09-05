@@ -5,6 +5,10 @@ resource "aws_s3_bucket" "terraform_state" {
   tags = {
     Name = "Terraform-State-Bucket"
   }
+
+  lifecycle {
+    prevent_destroy = true # Destroy ခေါက်ရင် Bucket ပျက်မသွားအောင် ကာကွယ်ပေးပါသည်
+  }
 }
 
 resource "aws_s3_bucket_versioning" "versioning"{
