@@ -44,4 +44,4 @@ jobs:
       # 6. Main Branch သို့ Push လုပ်ပါက Auto Apply လုပ်ဆောင်ခြင်း
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -var="db_password=${{ secrets.DB_PASSWORD }}"
+        run: terraform apply -auto-approve -var="db_password=${{ secrets.DB_PASSWORD }}"  
