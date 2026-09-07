@@ -3,11 +3,11 @@ resource "aws_iam_openid_connect_provider" "github" {
   client_id_list  = ["sts.amazonaws.com"] // amazon ရဲ့ security token service အတွက်လာကြတာ
 
   # GitHub Actions ရဲ့ လက်ရှိ OIDC Thumbprints
-  thumbprint_list = [
-    "6938fd4d98bab03faadb97b34396831e3780aea1",
-    "1c58a21d2931987e279f0f9810b74100693a1f87",
-    "d89e3bd43d5d909b47a1897730d54102b8001745"
-  ]
+  # thumbprint_list = [
+  #   "6938fd4d98bab03faadb97b34396831e3780aea1",
+  #   "1c58a21d2931987e279f0f9810b74100693a1f87",
+  #   "d89e3bd43d5d909b47a1897730d54102b8001745"
+  # ]
 }  // OIDC Provider မှတ်ပုံတင်ခြင်း ( github ကလာတယ့် ဧည့်သည်တွေကို ကျွန်တော်တို့လက်ခံမယ်)
 
 resource "aws_iam_role" "github_actions_role" {
